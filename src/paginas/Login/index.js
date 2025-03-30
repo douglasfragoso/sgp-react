@@ -2,6 +2,7 @@ import './login.css';
 import logo from '../../arquivos/imagens/sgp_logo_vertical.png';
 import { useContext, useState } from 'react';
 import { GlobalContext } from '../../contextos/GlobalContext';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const { login } = useContext(GlobalContext);
@@ -9,15 +10,23 @@ function Login() {
     const [senha, setSenha] = useState('');
     const [manterConectado, setManterConectado] = useState(true);
     const [erro, setErro] = useState('');
+    const navigate = useNavigate();
 
-    const fazerLogin = (e) => {
+    const fazerLogin = async (e) => {
         e.preventDefault();
 
         if (email === '' || senha === '') {
-            setErro("Preencha todos os campos!")
+            setErro("Preencha todos os campos!");
+            return;
         }
 
-        login({ email, senha, manterConectado });
+        setErro('');
+
+        try {
+            await login({ email, senha, manterConectado });
+        } catch (error) {
+            setErro(error.message);
+        }
     }
 
     return (
@@ -64,7 +73,13 @@ function Login() {
                                 </div>
 
                                 <div className='d-flex justify-content-center'>
-                                    <button type='submit' className='btn btn-primary mt-2 px-4'>Acessar</button>
+                                    <button type='submit' className='btn btn-primary mt-2 mx-2 px-4'
+                                    onClick={() => navigate("/projetos")}>Acessar</button>
+                                    
+                                    <button type="button" className='btn btn-secondary mt-2 px-3'
+                                    onClick={() => navigate("/novo-usuario")}>
+                                        Novo Usuario
+                                    </button>
                                 </div>
                             </div>
                         </div>

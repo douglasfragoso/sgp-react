@@ -1,36 +1,57 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+import { authService } from '../servicos/login';
 
 export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-    const [usuarioLogado, setUsuarioLogado] = useState({});
+    const [usuario, setUsuario] = useState(null);
+    const [carregando, setCarregando] = useState(true);
 
-    const login = (dadosUsuario) => {
-        setUsuarioLogado(dadosUsuario);
+    // Verifica autenticação inicial ao carregar o contexto
+    useEffect(() => {
+        const verificarAutenticacao = async () => {
+            try {
+                const usuario = authService.getCurrentUser();
+                if (usuario && authService.isAuthenticated()) {
+                    setUsuario(usuario);
+                }
+            } catch (error) {
+                console.error('Erro na verificação de autenticação:', error);
+            } finally {
+                setCarregando(false);
+            }
+        };
+        
+        verificarAutenticacao();
+    }, []);
 
-        // Chamada a API de autenticacao
-
-        if (dadosUsuario?.manterConectado) {
-            localStorage.setItem("usuarioLogado", JSON.stringify(dadosUsuario));
-        } else {
-            sessionStorage.setItem("usuarioLogado", JSON.stringify(dadosUsuario));
+    const login = async (credenciais) => {
+        try {
+            const usuarioAutenticado = await authService.login(credenciais);
+            setUsuario(usuarioAutenticado);
+            return usuarioAutenticado;
+        } catch (error) {
+            console.error('Erro no login:', error);
+            throw error;
         }
-
-        // TODO: Redirecionar para a tela inicial
     }
 
     const logout = () => {
-        setUsuarioLogado({});
-        localStorage.removeItem("usuarioLogado");
-        sessionStorage.removeItem("usuarioLogado");
+        authService.logout();
+        setUsuario(null);
+    }
 
-        // TODO: Redirecionar para a tela de login
+    const valorContexto = {
+        usuario,
+        carregando,
+        autenticado: authService.isAuthenticated(),
+        login,
+        logout
     }
 
     return (
-        <GlobalContext.Provider value={{ usuarioLogado, login, logout }}>
+        <GlobalContext.Provider value={valorContexto}>
             {children}
         </GlobalContext.Provider>
     )
 }
-
