@@ -4,12 +4,16 @@ import Rodape from "../../componentes/Rodape";
 import { excluirTarefaPeloId, listarTarefas } from "../../servicos/tarefas";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../componentes/Modal";
+import { GlobalContext } from "../../contextos/GlobalContext";
+import { useContext } from "react";
 
 function Tarefas() {
     const navigate = useNavigate();
     const [tarefas, setTarefas] = useState([]);
     const [exibirModal, setExibirModal] = useState(false);
     const [tarefaParaExcluir, setTarefaParaExcluir] = useState({});
+    const { usuarioLogado } = useContext(GlobalContext);
+    
 
     useEffect(() => {
         listarTarefas(setTarefas);
@@ -39,11 +43,13 @@ function Tarefas() {
             <section className="container mt-3" id="tarefas">
                 <div className="d-flex justify-content-between">
                     <h1>Tarefas Cadastradas</h1>
+                    {usuarioLogado && usuarioLogado.role === "ADMIN" && (
                     <div>
                         <a role="button" href="/nova-tarefa" className="btn btn-primary">
                             Nova Tarefa
                         </a>
                     </div>
+                    )}
                 </div>
 
                 <table className="table table-hover">
@@ -56,7 +62,9 @@ function Tarefas() {
                             <th scope="col">Prioridade</th>
                             <th scope="col">Status</th>
                             <th scope="col">Projeto</th>
+                            {usuarioLogado && usuarioLogado.role === "ADMIN" && (
                             <th scope="col">Opcoes</th>
+                            )}
                         </tr>
                     </thead>
                     <tbody>
@@ -70,6 +78,7 @@ function Tarefas() {
                                 <td>{tarefa.status}</td>
                                 <td>{tarefa.projeto?.nome}</td>
                                 <td>
+                                {usuarioLogado && usuarioLogado.role === "ADMIN" && (
                                     <div className="btn-group" role="group">
                                         <button
                                             type="button"
@@ -86,6 +95,7 @@ function Tarefas() {
                                             Excluir
                                         </button>
                                     </div>
+                                )}
                                 </td>
                             </tr>
                         ))}

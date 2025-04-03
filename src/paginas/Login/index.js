@@ -25,7 +25,7 @@ function Login() {
         setCarregando(true);
         try {
             await login(email, senha, manterConectado);
-            navigate("/projetos"); // Redireciona após login bem-sucedido
+            navigate("/projetos"); 
         } catch (error) {
             setErro("Credenciais inválidas. Tente novamente.");
         } finally {

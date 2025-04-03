@@ -8,22 +8,77 @@ import TarefaForm from "../paginas/Tarefas/TarefaForm";
 import Projetos from "../paginas/Projetos";
 import ProjetoForm from "../paginas/Projetos/ProjetoForm";
 import Dashboard from "../paginas/Dashboard";
+import ProtecaoDeRotas from "../rotas/filtro";
+
 
 function Rotas() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route index path="/" element={<Login />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/usuarios" element={<Usuarios />} />
+                <Route path="/" element={<Login />} />
                 <Route path="/novo-usuario" element={<UsuarioForm />} />
-                <Route path="/usuario/:id" element={<UsuarioForm />} />
-                <Route path="/projetos" element={<Projetos />} />
-                <Route path="/novo-projeto" element={<ProjetoForm />} />
-                <Route path="/projeto/:id" element={<ProjetoForm />} />
-                <Route path="/tarefas" element={<Tarefas />} />
-                <Route path="/nova-tarefa" element={<TarefaForm />} />
-                <Route path="/tarefa/:id" element={<TarefaForm />} />
+                
+                {/* Rotas protegidas */}
+                <Route path="/dashboard" element={
+                    <ProtecaoDeRotas allowedRoles={['ADMIN']}>
+                        <Dashboard />
+                    </ProtecaoDeRotas>
+                } />
+                
+                <Route path="/usuarios" element={
+                    <ProtecaoDeRotas allowedRoles={['ADMIN']}>
+                        <Usuarios />
+                    </ProtecaoDeRotas>
+                } />
+                
+                <Route path="/novo-usuario" element={
+                    <ProtecaoDeRotas allowedRoles={['ADMIN']}>
+                        <UsuarioForm />
+                    </ProtecaoDeRotas>
+                } />
+                
+                <Route path="/usuario/:id" element={
+                    <ProtecaoDeRotas allowedRoles={['ADMIN']}>
+                        <UsuarioForm />
+                    </ProtecaoDeRotas>
+                } />
+                
+                <Route path="/projetos" element={
+                    <ProtecaoDeRotas allowedRoles={['ADMIN', 'USER']}>
+                        <Projetos />
+                    </ProtecaoDeRotas>
+                } />
+                
+                <Route path="/novo-projeto" element={
+                    <ProtecaoDeRotas allowedRoles={['ADMIN']}>
+                        <ProjetoForm />
+                    </ProtecaoDeRotas>
+                } />
+                
+                <Route path="/projeto/:id" element={
+                    <ProtecaoDeRotas allowedRoles={['ADMIN']}>
+                        <ProjetoForm />
+                    </ProtecaoDeRotas>
+                } />
+                
+                <Route path="/tarefas" element={
+                    <ProtecaoDeRotas allowedRoles={['ADMIN', 'USER']}>
+                        <Tarefas />
+                    </ProtecaoDeRotas>
+                } />
+                
+                <Route path="/nova-tarefa" element={
+                    <ProtecaoDeRotas allowedRoles={['ADMIN']}>
+                        <TarefaForm />
+                    </ProtecaoDeRotas>
+                } />
+                
+                <Route path="/tarefa/:id" element={
+                    <ProtecaoDeRotas allowedRoles={['ADMIN', 'USER']}>
+                        <TarefaForm />
+                    </ProtecaoDeRotas>
+                } />
+                
                 <Route path="*" element={<Pagina404 />} />
             </Routes>
         </BrowserRouter>

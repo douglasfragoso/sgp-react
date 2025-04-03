@@ -6,7 +6,8 @@ import { GlobalContext } from "../../contextos/GlobalContext";
 
 function Cabecalho() {
     const navigate = useNavigate();
-    const { logout } = useContext(GlobalContext);
+    const { logout, usuarioLogado } = useContext(GlobalContext);
+    
 
     const handleLogout = () => {
         logout();
@@ -33,18 +34,26 @@ function Cabecalho() {
                         <img src={logo} alt="Sistema de Gestão de Projetos" width="200px" />
                     </a>
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                        {usuarioLogado && usuarioLogado.role === "ADMIN" && (
                             <li className="nav-item">
                                 <a className="nav-link active" href="/dashboard">Dashboard</a>
                             </li>
+                        )}
+                        {usuarioLogado && usuarioLogado.role === "ADMIN" && (
                                 <li className="nav-item">
                                     <a className="nav-link" href="/usuarios">Usuários</a>
                                 </li>
+                            )}
+                        {usuarioLogado && (
                             <li className="nav-item">
                                 <a className="nav-link" href="/projetos">Projetos</a>
                             </li>
+                        )}
+                        {usuarioLogado && (
                             <li className="nav-item">
                                 <a className="nav-link" href="/tarefas">Tarefas</a>
                             </li>
+                        )}
                         </ul>
 
                         <div className="d-flex align-items-center">

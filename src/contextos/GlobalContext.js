@@ -8,15 +8,10 @@ export const GlobalProvider = ({ children }) => {
     const [carregando, setCarregando] = useState(true);
 
     useEffect(() => {
-        const verificarAutenticacao = async () => {
-            const token = localStorage.getItem("jwtToken");
-            if (token) {
-                try {
-                    const usuario = await authService.getUsuario();
-                    setUsuarioLogado(usuario);
-                } catch (error) {
-                    logout();
-                }
+        const verificarAutenticacao = () => {
+            const userData = authService.getCurrentUser(); 
+            if (userData) {
+                setUsuarioLogado(userData);
             }
             setCarregando(false);
         };
@@ -26,16 +21,16 @@ export const GlobalProvider = ({ children }) => {
 
     const login = async (email, senha, manterConectado) => {
         try {
-            const dadosUsuario = await authService.login(email, senha);
-            setUsuarioLogado(dadosUsuario.usuario);
+            const userData = await authService.login(email, senha);
+            setUsuarioLogado(userData);
             
             if (manterConectado) {
-                localStorage.setItem("usuarioLogado", JSON.stringify(dadosUsuario.usuario));
+                localStorage.setItem("usuarioData", JSON.stringify(userData));
             } else {
-                sessionStorage.setItem("usuarioLogado", JSON.stringify(dadosUsuario.usuario));
+                sessionStorage.setItem("usuarioData", JSON.stringify(userData));
             }
             
-            return dadosUsuario;
+            return userData;
         } catch (error) {
             throw error;
         }
@@ -44,8 +39,8 @@ export const GlobalProvider = ({ children }) => {
     const logout = () => {
         authService.logout();
         setUsuarioLogado(null);
-        localStorage.removeItem("usuarioLogado");
-        sessionStorage.removeItem("usuarioLogado");
+        localStorage.removeItem("usuarioData");
+        sessionStorage.removeItem("usuarioData");
     };
 
     return (

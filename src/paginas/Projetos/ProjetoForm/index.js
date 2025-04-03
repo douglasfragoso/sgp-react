@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Cabecalho from "../../../componentes/Cabecalho";
 import Rodape from "../../../componentes/Rodape";
 import Modal from "../../../componentes/Modal";
@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { atualizarProjeto, obterProjetoPeloId, salvarProjeto } from "../../../servicos/projetos";
 import { listarUsuarios } from "../../../servicos/usuarios";
 import { excluirTarefaPeloId } from "../../../servicos/tarefas";
+import { GlobalContext } from "../../../contextos/GlobalContext";
 
 function ProjetoForm() {
     const navigate = useNavigate();
@@ -19,6 +20,7 @@ function ProjetoForm() {
     const [tarefaParaExcluir, setTarefaParaExcluir] = useState({});
     const [exibirModalSalvar, setExibirModalSalvar] = useState(false);
     const [exibirModalExcluir, setExibirModalExcluir] = useState(false);
+    const { usuarioLogado } = useContext(GlobalContext);
 
     useEffect(() => {
         if (id) {
@@ -35,7 +37,8 @@ function ProjetoForm() {
             nome,
             descricao,
             responsavel: {
-                id: responsavelId
+                id: responsavelId,
+                role: usuarioLogado.role
             }
         }
 
@@ -80,7 +83,7 @@ function ProjetoForm() {
 
             <section className="container mt-3" id="projeto-form">
                 <h1>Dados do Projeto</h1>
-
+                {usuarioLogado && usuarioLogado.role === "ADMIN" && (
                 <form className="row g-3" onSubmit={enviarFormulario}>
                     <div className="col-12">
                         <label htmlFor="nome" className="form-label">Nome:</label>
@@ -128,7 +131,7 @@ function ProjetoForm() {
                         <button className="btn btn-outline-primary ms-2" onClick={cancelar}>Cancelar</button>
                     </div>
                 </form>
-
+                )}
                 <section className="container mt-3" id="tarefas">
                     <div className="d-flex justify-content-between">
                         <h2>Tarefas Associadas</h2>
@@ -181,7 +184,7 @@ function ProjetoForm() {
                         </tbody>
                     </table>
                 </section>
-
+                
                 {exibirModalSalvar && (
                     <Modal
                         titulo={"Confirmacao"}

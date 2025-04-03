@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Cabecalho from "../../../componentes/Cabecalho";
 import Rodape from "../../../componentes/Rodape";
 import Modal from "../../../componentes/Modal";
@@ -7,6 +7,7 @@ import { atualizarTarefa, obterTarefaPeloId, salvarTarefa } from "../../../servi
 import { formatarData } from "../../../utils/data";
 import { listarProjetos } from "../../../servicos/projetos";
 import { listarUsuarios } from "../../../servicos/usuarios";
+import { GlobalContext } from "../../../contextos/GlobalContext";
 
 function TarefaForm() {
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ function TarefaForm() {
     const [usuarioId, setUsuarioId] = useState("");
     const [usuarios, setUsuarios] = useState([]);
     const [exibirModal, setExibirModal] = useState(false);
+    const { usuarioLogado } = useContext(GlobalContext);
 
     useEffect(() => {
         if (id) {
@@ -45,7 +47,8 @@ function TarefaForm() {
                 id: projetoId
             },
             usuario: {
-                id: usuarioId
+                id: usuarioId,
+                role: usuarioLogado.role
             }
         }
 
@@ -73,7 +76,7 @@ function TarefaForm() {
 
             <section className="container mt-3" id="tarefa-form">
                 <h1>Dados da Tarefa</h1>
-
+                {usuarioLogado && usuarioLogado.role === "ADMIN" && (
                 <form className="row g-3" onSubmit={enviarFormulario}>
                     <div className="col-12">
                         <label htmlFor="titulo" className="form-label">Titulo:</label>
@@ -178,7 +181,7 @@ function TarefaForm() {
                         <button className="btn btn-outline-primary ms-2" onClick={cancelar}>Cancelar</button>
                     </div>
                 </form>
-
+                )}
                 {exibirModal && (
                     <Modal
                         titulo={"Confirmacao"}
