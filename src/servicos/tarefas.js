@@ -44,6 +44,7 @@ export async function obterTarefaPeloId(
     setTitulo,
     setDataCriacao,
     setDataConclusao,
+    setUsuarioId,
     setPrioridade,
     setStatus,
     setProjetoId
@@ -54,6 +55,7 @@ export async function obterTarefaPeloId(
                 setTitulo(resposta.data.titulo);
                 setDataCriacao(resposta.data.dataCriacao);
                 setDataConclusao(resposta.data.dataConclusao);
+                setUsuarioId(resposta.data.usuario?.id);
                 setPrioridade(resposta.data.prioridade);
                 setStatus(resposta.data.status);
                 setProjetoId(resposta.data.projeto?.id);

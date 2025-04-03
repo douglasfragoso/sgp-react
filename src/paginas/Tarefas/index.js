@@ -88,8 +88,7 @@ function Tarefas() {
                                     </div>
                                 </td>
                             </tr>
-                        ))
-                        }
+                        ))}
                     </tbody>
                 </table>
             </section>
@@ -97,7 +96,7 @@ function Tarefas() {
             {exibirModal && (
                 <Modal
                     titulo={"Confirmacao de Exclusao"}
-                    texto={"Tem certeza que deseja excluir este tarefa?"}
+                    texto={"Tem certeza que deseja excluir esta tarefa?"}
                     txtBtn01={"Sim, excluir."}
                     onClickBtn01={excluirTarefa}
                     txtBtn02={"Cancelar"}

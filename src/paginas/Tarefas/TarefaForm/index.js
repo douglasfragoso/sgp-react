@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { atualizarTarefa, obterTarefaPeloId, salvarTarefa } from "../../../servicos/tarefas";
 import { formatarData } from "../../../utils/data";
 import { listarProjetos } from "../../../servicos/projetos";
+import { listarUsuarios } from "../../../servicos/usuarios";
 
 function TarefaForm() {
     const navigate = useNavigate();
@@ -18,14 +19,17 @@ function TarefaForm() {
     const [status, setStatus] = useState("");
     const [projetoId, setProjetoId] = useState("");
     const [projetos, setProjetos] = useState([]);
+    const [usuarioId, setUsuarioId] = useState("");
+    const [usuarios, setUsuarios] = useState([]);
     const [exibirModal, setExibirModal] = useState(false);
 
     useEffect(() => {
         if (id) {
-            obterTarefaPeloId(id, setTitulo, setDataCriacao, setDataConclusao, setPrioridade, setStatus, setProjetoId);
+            obterTarefaPeloId(id, setTitulo, setDataCriacao, setDataConclusao, setUsuarioId, setPrioridade, setStatus, setProjetoId);
         }
 
         listarProjetos(setProjetos);
+        listarUsuarios(setUsuarios);
     }, []);
 
     const enviarFormulario = async (e) => {
@@ -39,6 +43,9 @@ function TarefaForm() {
             status,
             projeto: {
                 id: projetoId
+            },
+            usuario: {
+                id: usuarioId
             }
         }
 
@@ -64,7 +71,7 @@ function TarefaForm() {
         <>
             <Cabecalho />
 
-            <section className="container mt-3" id="usuario-form">
+            <section className="container mt-3" id="tarefa-form">
                 <h1>Dados da Tarefa</h1>
 
                 <form className="row g-3" onSubmit={enviarFormulario}>
@@ -80,7 +87,7 @@ function TarefaForm() {
                             required
                         />
                     </div>
-                    <div className="col-md-6 col-12">
+                    <div className="col-md-4 col-12">
                         <label htmlFor="dataCriacao" className="form-label">Data de Criacao:</label>
                         <input
                             type="date"
@@ -91,7 +98,7 @@ function TarefaForm() {
                             required
                         />
                     </div>
-                    <div className="col-md-6 col-12">
+                    <div className="col-md-4 col-12">
                         <label htmlFor="dataConclusao" className="form-label">Data de Conclusao:</label>
                         <input
                             type="date"
@@ -100,6 +107,22 @@ function TarefaForm() {
                             value={dataConclusao}
                             onChange={(e) => setDataConclusao(e.target.value)}
                         />
+                    </div>
+                    
+                    <div className="col-md-4 col-12">
+                        <label htmlFor="usuario" className="form-label">Atribuir para:</label>
+                        <select
+                            id="usuario"
+                            className="form-select"
+                            value={usuarioId}
+                            onChange={(e) => setUsuarioId(e.target.value)}
+                            required
+                        >
+                            <option disabled value="">Escolha uma opcao...</option>
+                            {usuarios?.map((usuario) => (
+                                <option value={usuario.id} key={usuario.id}>{usuario.nome}</option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="col-md-4 col-12">
