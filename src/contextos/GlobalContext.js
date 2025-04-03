@@ -1,36 +1,56 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+import { authService } from "../servicos/login"; 
 
 export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-    const [usuarioLogado, setUsuarioLogado] = useState({});
+    const [usuarioLogado, setUsuarioLogado] = useState(null);
+    const [carregando, setCarregando] = useState(true);
 
-    const login = (dadosUsuario) => {
-        setUsuarioLogado(dadosUsuario);
+    useEffect(() => {
+        const verificarAutenticacao = async () => {
+            const token = localStorage.getItem("jwtToken");
+            if (token) {
+                try {
+                    const usuario = await authService.getUsuario();
+                    setUsuarioLogado(usuario);
+                } catch (error) {
+                    logout();
+                }
+            }
+            setCarregando(false);
+        };
 
-        // Chamada a API de autenticacao
+        verificarAutenticacao();
+    }, []);
 
-        if (dadosUsuario?.manterConectado) {
-            localStorage.setItem("usuarioLogado", JSON.stringify(dadosUsuario));
-        } else {
-            sessionStorage.setItem("usuarioLogado", JSON.stringify(dadosUsuario));
+    const login = async (email, senha, manterConectado) => {
+        try {
+            const dadosUsuario = await authService.login(email, senha);
+            setUsuarioLogado(dadosUsuario.usuario);
+            
+            if (manterConectado) {
+                localStorage.setItem("usuarioLogado", JSON.stringify(dadosUsuario.usuario));
+            } else {
+                sessionStorage.setItem("usuarioLogado", JSON.stringify(dadosUsuario.usuario));
+            }
+            
+            return dadosUsuario;
+        } catch (error) {
+            throw error;
         }
-
-        // TODO: Redirecionar para a tela inicial
-    }
+    };
 
     const logout = () => {
-        setUsuarioLogado({});
+        authService.logout();
+        setUsuarioLogado(null);
         localStorage.removeItem("usuarioLogado");
         sessionStorage.removeItem("usuarioLogado");
-
-        // TODO: Redirecionar para a tela de login
-    }
+    };
 
     return (
-        <GlobalContext.Provider value={{ usuarioLogado, login, logout }}>
+        <GlobalContext.Provider value={{ usuarioLogado, carregando, login, logout }}>
             {children}
         </GlobalContext.Provider>
-    )
-}
-
+    );
+};

@@ -10,17 +10,28 @@ function Login() {
     const [senha, setSenha] = useState('');
     const [manterConectado, setManterConectado] = useState(true);
     const [erro, setErro] = useState('');
+    const [carregando, setCarregando] = useState(false);
     const navigate = useNavigate();
 
-    const fazerLogin = (e) => {
+    const fazerLogin = async (e) => {
         e.preventDefault();
+        setErro('');
 
-        if (email === '' || senha === '') {
-            setErro("Preencha todos os campos!")
+        if (!email || !senha) {
+            setErro("Preencha todos os campos!");
+            return;
         }
 
-        login({ email, senha, manterConectado });
-    }
+        setCarregando(true);
+        try {
+            await login(email, senha, manterConectado);
+            navigate("/projetos"); // Redireciona após login bem-sucedido
+        } catch (error) {
+            setErro("Credenciais inválidas. Tente novamente.");
+        } finally {
+            setCarregando(false);
+        }
+    };
 
     return (
         <div className="bg-container">
@@ -33,9 +44,11 @@ function Login() {
                                     <img src={logo} alt="Sistema de Gerenciamento de Projetos" width="200px" />
                                 </div>
 
-                                <div className='d-flex justify-content-center'>
-                                    <span className='text-danger mb-2'>{erro}</span>
-                                </div>
+                                {erro && (
+                                    <div className='d-flex justify-content-center'>
+                                        <span className='text-danger mb-2'>{erro}</span>
+                                    </div>
+                                )}
 
                                 <input
                                     type='email'
@@ -43,6 +56,7 @@ function Login() {
                                     placeholder='E-mail'
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    required
                                 />
 
                                 <input
@@ -51,13 +65,14 @@ function Login() {
                                     placeholder='Senha'
                                     value={senha}
                                     onChange={(e) => setSenha(e.target.value)}
+                                    required
                                 />
 
                                 <div className='form-check text-start my-3'>
                                     <input
                                         className='form-check-input'
                                         type='checkbox'
-                                        defaultChecked={manterConectado}
+                                        checked={manterConectado}
                                         onChange={() => setManterConectado(!manterConectado)}
                                     />
                                     <label className='form-check-label text-dark'>
@@ -66,9 +81,20 @@ function Login() {
                                 </div>
 
                                 <div className='d-flex justify-content-center'>
-                                    <button type='submit' className='btn btn-primary mt-2 px-4 mx-2'>Acessar</button>
-                                    <button type='submit' className='btn btn-secondary mt-2 px-4 mx-2'
-                                     onClick={() => navigate("/novo-usuario")}>Registrar</button>
+                                    <button 
+                                        type='submit' 
+                                        className='btn btn-primary mt-2 px-4 mx-2'
+                                        disabled={carregando}
+                                    >
+                                        {carregando ? 'Carregando...' : 'Acessar'}
+                                    </button>
+                                    <button 
+                                        type='button' 
+                                        className='btn btn-secondary mt-2 px-4 mx-2'
+                                        onClick={() => navigate("/novo-usuario")}
+                                    >
+                                        Registrar
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +102,7 @@ function Login() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default Login;

@@ -51,7 +51,7 @@ function UsuarioForm() {
 
     const confirmarCadastro = () => {
         setExibirModal(false);
-        navigate("/usuarios");
+        navigate("/");
     }
 
     return (
