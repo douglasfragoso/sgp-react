@@ -16,7 +16,9 @@ function ProjetoForm() {
     const [responsavelId, setResponsavelId] = useState("");
     const [tarefas, setTarefas] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
-    const [exibirModal, setExibirModal] = useState(false);
+    const [tarefaParaExcluir, setTarefaParaExcluir] = useState({});
+    const [exibirModalSalvar, setExibirModalSalvar] = useState(false);
+    const [exibirModalExcluir, setExibirModalExcluir] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -40,9 +42,9 @@ function ProjetoForm() {
         console.log(dadosProjeto);
 
         if (id) {
-            await atualizarProjeto(id, dadosProjeto, setExibirModal);
+            await atualizarProjeto(id, dadosProjeto, setExibirModalSalvar);
         } else {
-            await salvarProjeto(dadosProjeto, setExibirModal);
+            await salvarProjeto(dadosProjeto, setExibirModalSalvar);
         }
     }
 
@@ -51,7 +53,7 @@ function ProjetoForm() {
     }
 
     const confirmarCadastro = () => {
-        setExibirModal(false);
+        setExibirModalSalvar(false);
         navigate("/projetos");
     }
 
@@ -180,7 +182,7 @@ function ProjetoForm() {
                     </table>
                 </section>
 
-                {exibirModal && (
+                {exibirModalSalvar && (
                     <Modal
                         titulo={"Confirmacao"}
                         texto={`Projeto ${id ? 'atualizado' : 'cadastrado'} com sucesso!`}
