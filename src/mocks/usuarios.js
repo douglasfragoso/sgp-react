@@ -1,82 +1,82 @@
-export const USUARIOS = [
+export const LISTA_USUARIOS = [
     {
         "id": 1,
         "nome": "Alexandre de Souza Jr.",
         "cpf": "123.456.789-00",
-        "email": "alexandre.souza@example.com",
-        "idade": "28",
-        "status": "Ativo"
+        "email": "alexandre@treinarecife.com.br",
+        "idade": 28,
+        "status": "ATIVO"
     },
     {
         "id": 2,
-        "nome": "Maria Fernanda Silva",
+        "nome": "Maria Oliveira Santos",
         "cpf": "987.654.321-00",
-        "email": "maria.fernanda@example.com",
-        "idade": "34",
-        "status": "Ativo"
+        "email": "maria.oliveira@email.com",
+        "idade": 35,
+        "status": "ATIVO"
     },
     {
         "id": 3,
-        "nome": "Carlos Eduardo Lima",
+        "nome": "Carlos Eduardo Pereira",
         "cpf": "456.789.123-00",
-        "email": "carlos.lima@example.com",
-        "idade": "22",
-        "status": "Inativo"
+        "email": "carlos.pereira@email.com",
+        "idade": 42,
+        "status": "INATIVO"
     },
     {
         "id": 4,
-        "nome": "Ana Carolina Santos",
+        "nome": "Ana Carolina Ferreira",
         "cpf": "321.654.987-00",
-        "email": "ana.santos@example.com",
-        "idade": "29",
-        "status": "Ativo"
+        "email": "ana.ferreira@email.com",
+        "idade": 29,
+        "status": "ATIVO"
     },
     {
         "id": 5,
-        "nome": "João Pedro Oliveira",
+        "nome": "João Pedro Almeida",
         "cpf": "654.321.987-00",
-        "email": "joao.oliveira@example.com",
-        "idade": "31",
-        "status": "Ativo"
+        "email": "joao.almeida@email.com",
+        "idade": 31,
+        "status": "ATIVO"
     },
     {
         "id": 6,
-        "nome": "Juliana Costa",
+        "nome": "Juliana Costa Lima",
         "cpf": "789.123.456-00",
-        "email": "juliana.costa@example.com",
-        "idade": "26",
-        "status": "Inativo"
+        "email": "juliana.lima@email.com",
+        "idade": 26,
+        "status": "INATIVO"
     },
     {
         "id": 7,
-        "nome": "Ricardo Almeida",
-        "cpf": "234.567.890-00",
-        "email": "ricardo.almeida@example.com",
-        "idade": "40",
-        "status": "Ativo"
+        "nome": "Ricardo Martins Souza",
+        "cpf": "159.357.486-00",
+        "email": "ricardo.souza@email.com",
+        "idade": 38,
+        "status": "ATIVO"
     },
     {
         "id": 8,
-        "nome": "Fernanda Gomes",
-        "cpf": "890.123.456-00",
-        "email": "fernanda.gomes@example.com",
-        "idade": "35",
-        "status": "Ativo"
+        "nome": "Fernanda Rodrigues Silva",
+        "cpf": "357.159.486-00",
+        "email": "fernanda.silva@email.com",
+        "idade": 33,
+        "status": "ATIVO"
     },
     {
         "id": 9,
-        "nome": "Lucas Martins",
-        "cpf": "567.890.123-00",
-        "email": "lucas.martins@example.com",
-        "idade": "27",
-        "status": "Inativo"
+        "nome": "Lucas Gonçalves Barbosa",
+        "cpf": "486.357.159-00",
+        "email": "lucas.barbosa@email.com",
+        "idade": 27,
+        "status": "INATIVO"
     },
     {
         "id": 10,
-        "nome": "Patrícia Rocha",
-        "cpf": "345.678.901-00",
-        "email": "patricia.rocha@example.com",
-        "idade": "33",
-        "status": "Ativo"
+        "nome": "Patrícia Alves Castro",
+        "cpf": "258.369.147-00",
+        "email": "patricia.castro@email.com",
+        "idade": 45,
+        "status": "ATIVO"
     }
 ];
