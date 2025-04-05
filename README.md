@@ -33,7 +33,7 @@ cd sgp-react
 # Instale as dependências
 npm install
 
-# Execute a aplicação em modo de desenvolvimento
+# Execute a aplicação 
 npm start
 
 # O servidor iniciará na porta 3000 - acesse http://localhost:3000
