@@ -38,6 +38,6 @@ npm start
 
 # O servidor iniciará na porta 3000 - acesse http://localhost:3000
 ```
-Obs! Não esqueça de garantir que o backend e o banco de dados estejam funcionado.
+Obs! Não esqueça de garantir que o [Backend](https://github.com/douglasfragoso/sgp-spring-boot) e o banco de dados estejam funcionado.
 
 Feito com carinho por Douglas Fragoso 👊
